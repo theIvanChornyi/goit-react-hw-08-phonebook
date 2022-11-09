@@ -7,11 +7,11 @@ import ReduxProvider from 'redux/store';
 import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  // <React.StrictMode>
-  <ReduxProvider>
-    <BrowserRouter basename="goit-react-hw-08-phonebook">
-      <App />
-    </BrowserRouter>
-  </ReduxProvider>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <ReduxProvider>
+      <BrowserRouter basename="goit-react-hw-08-phonebook">
+        <App />
+      </BrowserRouter>
+    </ReduxProvider>
+  </React.StrictMode>
 );
