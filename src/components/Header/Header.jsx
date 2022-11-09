@@ -9,8 +9,9 @@ import { Avatar, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
 
 import { selectIsAuth, selectUserName } from 'redux/auth/selectors.auth';
 import { logOutThunk } from 'redux/auth/thunks.auth';
-import { HeaderLogo, UserName } from './Header.styled';
+import { HeaderLogo } from './Header.styled';
 import HeaderLink from 'components/HeaderLink';
+import UserMenu from 'components/UserMenu';
 
 const settings = ['Logout'];
 const pages = ['Login', 'Register'];
@@ -18,7 +19,7 @@ const pages = ['Login', 'Register'];
 export default function Header() {
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
-  const name = useSelector(selectUserName);
+  const userName = useSelector(selectUserName);
 
   const handleLogOut = () => {
     dispatch(logOutThunk());
@@ -42,15 +43,11 @@ export default function Header() {
           </Typography>
           {isAuth ? (
             <>
-              <Box sx={{ mr: '10px' }}>
-                <Typography textAlign="center">
-                  {<UserName>{name}</UserName>}
-                </Typography>
-              </Box>
+              <UserMenu />
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="name" src="/static/images/avatar/2.jpg" />
+                    <Avatar alt={userName} src="/static/images/avatar/2.jpg" />
                   </IconButton>
                 </Tooltip>
                 <Menu
