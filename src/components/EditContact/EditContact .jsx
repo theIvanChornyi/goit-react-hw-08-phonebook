@@ -34,10 +34,10 @@ export default function EditContact({ onEdit, id, name, number }) {
   const handleEditContact = data => {
     const isChanged = contacts.find(
       contact =>
-        contact.name.toLowerCase() === data.name ||
+        contact.name.toLowerCase() === data.name &&
         contact.number === data.number
     );
-    if (!isChanged) {
+    if (isChanged) {
       onEdit(false);
     } else {
       dispatch(updateContactThunk({ id, data }));
