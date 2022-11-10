@@ -1,12 +1,16 @@
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { LoadingButton } from '@mui/lab';
 import { Paper, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 
 import { Controller } from 'react-hook-form';
-import { selectedAddet } from 'redux/contacts/selectors.contacts';
+import {
+  selectedAddet,
+  selectedContacts,
+} from 'redux/contacts/selectors.contacts';
 
 export default function CreateContact({
   control,
@@ -15,9 +19,26 @@ export default function CreateContact({
   editContacts,
 }) {
   const isAddet = useSelector(selectedAddet);
+  const contacts = useSelector(selectedContacts);
+
+  const handleCreateNewContact = data => {
+    const isIncludes = contacts.find(
+      contact => contact.name.toLowerCase() === data.name.toLowerCase()
+    );
+
+    if (isIncludes) {
+      toast.error(`${data.name} is already in contacts`, {
+        autoClose: false,
+      });
+    } else {
+      toast.dismiss();
+      onSubmit(data);
+    }
+  };
+
   return (
     <Paper as="li" elevation={3}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleCreateNewContact)}>
         <Box
           sx={{
             display: 'flex',

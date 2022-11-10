@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Controller, useForm } from 'react-hook-form';
 
 import { LoadingButton } from '@mui/lab';
@@ -11,6 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { schemaContact } from 'helpers/yup/validation.schema';
 
 import { updateContactThunk } from 'redux/contacts/thunks.contacts';
+import { selectedContacts } from 'redux/contacts/selectors.contacts';
 
 export default function EditContact({ onEdit, id, name, number }) {
   const dispatch = useDispatch();
@@ -28,11 +29,24 @@ export default function EditContact({ onEdit, id, name, number }) {
   const handleAbortEdit = () => {
     onEdit(false);
   };
+  const contacts = useSelector(selectedContacts);
 
   const handleEditContact = data => {
-    dispatch(updateContactThunk({ id, data }));
-    onEdit(false);
+    const isIncludes = contacts.find(
+      contact => contact.name.toLowerCase() === data.name.toLowerCase()
+    );
+
+    if (isIncludes) {
+      toast.error(`${data.name} is already in contacts`, {
+        autoClose: false,
+      });
+    } else {
+      toast.dismiss();
+      dispatch(updateContactThunk({ id, data }));
+      onEdit(false);
+    }
   };
+
   const errorMesage = errors.name?.message || errors.number?.message;
   toast.warn(errorMesage);
   return (
