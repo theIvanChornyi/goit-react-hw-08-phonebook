@@ -33,12 +33,14 @@ export default function EditContact({ onEdit, id, name, number }) {
 
   const handleEditContact = data => {
     const isChanged = contacts.find(
-      contact =>
-        contact.name.toLowerCase() === data.name &&
-        contact.number === data.number
+      contact => contact.name === data.name && contact.number === data.number
     );
+    const isIncludes = contacts.find(contact => contact.name === data.name);
+
     if (isChanged) {
       onEdit(false);
+    } else if (isIncludes) {
+      toast.error(`${data.name} is already in contacts`);
     } else {
       dispatch(updateContactThunk({ id, data }));
       onEdit(false);
